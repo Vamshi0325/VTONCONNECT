@@ -68,7 +68,7 @@ export default function Home() {
 
   return (
     <Container
-      maxWidth="sm"
+      maxWidth="100%"
       sx={{
         display: "flex",
         flexDirection: "column",
