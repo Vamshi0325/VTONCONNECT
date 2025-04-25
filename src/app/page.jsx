@@ -88,6 +88,8 @@ export default function Home() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            justifyContent: "center",
+            textAlign: "center",
           }}
         >
           <Typography
