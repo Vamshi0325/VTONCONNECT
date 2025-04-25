@@ -75,21 +75,36 @@ export default function Home() {
         alignItems: "center",
         justifyContent: "center",
         height: "100vh",
+        margin: "0",
       }}
     >
-      <Typography variant="h3" component="h1" gutterBottom>
+      <Typography variant="h4" component="h1" gutterBottom>
         TON Connect Demo
       </Typography>
       {tonWalletAddress ? (
-        <div>
-          <Typography variant="body1" gutterBottom>
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography
+            variant="body1"
+            gutterBottom
+            sx={{
+              wordBreak: "break-word",
+              width: "100%",
+            }}
+          >
             Connected Wallet Address: {formatAddress(tonWalletAddress)}
           </Typography>
           <Button
             variant="contained"
             color="error"
             onClick={handleWalletAction}
-            sx={{ mt: 2 }}
+            sx={{ mt: 2, borderRadius: "50px" }}
           >
             Disconnect Wallet
           </Button>
@@ -99,7 +114,7 @@ export default function Home() {
           variant="contained"
           color="primary"
           onClick={handleWalletAction}
-          sx={{ mt: 2 }}
+          sx={{ mt: 2, borderRadius: "50px" }}
         >
           Connect TON Wallet
         </Button>
@@ -107,13 +122,3 @@ export default function Home() {
     </Container>
   );
 }
-
-// "use client";
-
-// export default function Home() {
-//   return (
-//     <div>
-//       <h1>Home Page</h1>
-//     </div>
-//   );
-// }
