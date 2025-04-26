@@ -5,41 +5,39 @@ import {
   useTonAddress,
   useTonConnectUI,
 } from "@tonconnect/ui-react";
-import { Container, Typography } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  Container,
+  Typography,
+  Box,
+  Paper,
+  Divider,
+  useTheme,
+} from "@mui/material";
 import { useEffect, useState } from "react";
-import Loader from "@/components/Loader";
+import Loader from "../components/Loader";
 
 export default function Home() {
-  const [isClient, setIsClient] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // Loading state to control loader visibility
-  const [tonConnectUI, setOptions] = useTonConnectUI();
+  const [isLoading, setIsLoading] = useState(true);
   const userFriendlyAddress = useTonAddress();
   const rawAddress = useTonAddress(false);
+  const theme = useTheme();
 
-  // Set isClient to true after the component mounts (only runs in client-side)
   useEffect(() => {
-    setIsClient(true);
-    // Set loader visibility for 3 seconds after component mounts
     const timer = setTimeout(() => {
-      setIsLoading(false); // Hide loader after 3 seconds
+      setIsLoading(false);
     }, 3000);
-
-    // Clean up the timeout on unmount
     return () => clearTimeout(timer);
   }, []);
 
-  useEffect(() => {
-    console.log("tonConnectUI", tonConnectUI);
-    console.log("setOptions", setOptions);
-  }, [tonConnectUI, setOptions]);
-
-  // Show the loader until `isLoading` is false
   if (isLoading) {
     return <Loader />;
   }
 
   return (
     <Container
+      maxWidth="md"
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -50,36 +48,103 @@ export default function Home() {
         margin: "auto",
       }}
     >
-      <Typography variant="h4" component="h1" gutterBottom>
-        TON Connect Demo
-      </Typography>
-      <TonConnectButton
-        className="my-button-class"
-        ui={tonConnectUI}
-        options={setOptions}
-      />
-      {userFriendlyAddress && (
-        <div
-          style={{
+      <Paper
+        elevation={0}
+        sx={{
+          padding: 2,
+          borderRadius: 4,
+          width: "100%",
+          background: "rgba(255, 255, 255, 0.8)",
+          backdropFilter: "blur(10px)",
+          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.08)",
+        }}
+      >
+        <Typography
+          variant="h5"
+          component="h1"
+          gutterBottom
+          sx={{
+            fontWeight: 700,
             textAlign: "center",
-            width: "90%",
-            margin: "0 auto",
-            wordWrap: "break-word",
-            marginTop: "20px",
+            mb: 2,
           }}
         >
-          <span>
-            User-friendly address: <br />
-            {userFriendlyAddress}
-          </span>
-          <br />
-          <br />
-          <span>
-            Raw address: <br />
-            {rawAddress}
-          </span>
-        </div>
-      )}
+          TON Connect Demo
+        </Typography>
+
+        <Box sx={{ display: "flex", justifyContent: "center", mb: 4 }}>
+          <TonConnectButton />
+        </Box>
+
+        {userFriendlyAddress && (
+          <Card
+            sx={{
+              borderRadius: 3,
+              background: "linear-gradient(145deg, #f5f7fa 0%, #e4e7eb 100%)",
+              boxShadow: "0 10px 20px rgba(0, 0, 0, 0.05)",
+              overflow: "hidden",
+              border: "1px solid rgba(0, 0, 0, 0.05)",
+              transition: "transform 0.3s ease",
+              "&:hover": {
+                transform: "translateY(-5px)",
+                boxShadow: "0 15px 30px rgba(0, 0, 0, 0.1)",
+              },
+            }}
+          >
+            <CardContent sx={{ padding: 3 }}>
+              <Typography
+                variant="h6"
+                gutterBottom
+                sx={{
+                  fontWeight: 600,
+                  color: theme.palette.primary.main,
+                }}
+              >
+                User-friendly address:
+              </Typography>
+              <Typography
+                variant="body1"
+                gutterBottom
+                sx={{
+                  fontFamily: "monospace",
+                  background: "rgba(0, 0, 0, 0.03)",
+                  padding: 1.5,
+                  borderRadius: 2,
+                  wordBreak: "break-all",
+                }}
+              >
+                {userFriendlyAddress}
+              </Typography>
+
+              <Divider sx={{ my: 2.5 }} />
+
+              <Typography
+                variant="h6"
+                gutterBottom
+                sx={{
+                  fontWeight: 600,
+                  color: theme.palette.primary.main,
+                }}
+              >
+                Raw address:
+              </Typography>
+              <Typography
+                variant="body1"
+                gutterBottom
+                sx={{
+                  fontFamily: "monospace",
+                  background: "rgba(0, 0, 0, 0.03)",
+                  padding: 1.5,
+                  borderRadius: 2,
+                  wordBreak: "break-all",
+                }}
+              >
+                {rawAddress}
+              </Typography>
+            </CardContent>
+          </Card>
+        )}
+      </Paper>
     </Container>
   );
 }
