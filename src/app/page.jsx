@@ -54,9 +54,9 @@ export default function Home() {
           padding: 2,
           borderRadius: 4,
           width: "100%",
-          background: "rgba(255, 255, 255, 0.8)",
+          background: "repeat",
           backdropFilter: "blur(10px)",
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.08)",
+          boxShadow: "0 8px 32px rgb(0 0 0 / 34%)",
         }}
       >
         <Typography
