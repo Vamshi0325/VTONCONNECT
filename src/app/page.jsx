@@ -1,79 +1,71 @@
 "use client";
 
-import { Address } from "@ton/core";
-import { useTonConnectUI } from "@tonconnect/ui-react";
-import { useCallback, useEffect, useState } from "react";
-import { Button, Container, Typography } from "@mui/material";
+import {
+  TonConnectButton,
+  useTonAddress,
+  useTonConnectUI,
+} from "@tonconnect/ui-react";
+import { Container, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [tonConnectUI] = useTonConnectUI();
-  const [tonWalletAddress, setTonWalletAddress] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const handleWalletConnection = useCallback((address) => {
-    setTonWalletAddress(address);
-    console.log("Wallet Connected Successfully:", address);
-    setIsLoading(false);
-  }, []);
-
-  const handleWalletDisconnection = useCallback(() => {
-    setTonWalletAddress(null);
-    console.log("Wallet Disconnected Successfully");
-    setIsLoading(false);
-  }, []);
+  const [isClient, setIsClient] = useState(false);
+  const [tonConnectUI, setOptions] = useTonConnectUI();
 
   useEffect(() => {
-    const checkWalletConnection = async () => {
-      if (tonConnectUI.account?.address) {
-        console.log("Raw Wallet Address:", tonConnectUI.account.address);
-        handleWalletConnection(tonConnectUI.account.address);
-      } else {
-        handleWalletDisconnection();
-      }
-    };
+    console.log("tonConnectUI", tonConnectUI);
+    console.log("setOptions", setOptions);
+  }, []);
 
-    checkWalletConnection();
+  const userFriendlyAddress = useTonAddress();
+  const rawAddress = useTonAddress(false);
 
-    const unsubscribe = tonConnectUI.onStatusChange((wallet) => {
-      if (wallet?.account?.address) {
-        handleWalletConnection(wallet.account.address);
-      } else {
-        handleWalletDisconnection();
-      }
-    });
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
-    return () => {
-      unsubscribe();
-    };
-  }, [tonConnectUI, handleWalletConnection, handleWalletDisconnection]);
+  if (!isClient) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <div className="loader"></div>
+        <style jsx>{`
+          .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+          }
 
-  const handleWalletAction = async () => {
-    setIsLoading(true);
-    if (tonConnectUI.connected) {
-      await tonConnectUI.disconnect();
-    } else {
-      await tonConnectUI.openModal();
-    }
-  };
-
-  const formatAddress = (address) => {
-    const tempAddress = Address.parse(address).toString();
-    return tempAddress;
-    // return `${tempAddress.slice(0, 4)}...${tempAddress.slice(-4)}`;
-  };
-
-  if (isLoading) {
-    return <div>Loading...</div>;
+          @keyframes spin {
+            0% {
+              transform: rotate(0deg);
+            }
+            100% {
+              transform: rotate(360deg);
+            }
+          }
+        `}</style>
+      </div>
+    );
   }
 
   return (
     <Container
-      maxWidth="100%"
       sx={{
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
+        width: "100%",
         height: "100vh",
         margin: "0",
       }}
@@ -81,45 +73,32 @@ export default function Home() {
       <Typography variant="h4" component="h1" gutterBottom>
         TON Connect Demo
       </Typography>
-      {tonWalletAddress ? (
+      <TonConnectButton
+        className="my-button-class "
+        ui={tonConnectUI}
+        options={setOptions}
+      />
+      {userFriendlyAddress && (
         <div
           style={{
-            width: "100%",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
             textAlign: "center",
+            width: "90%",
+            margin: "0 auto",
+            wordWrap: "break-word",
+            marginTop: "20px",
           }}
         >
-          <Typography
-            variant="body1"
-            gutterBottom
-            sx={{
-              wordBreak: "break-word",
-              width: "100%",
-            }}
-          >
-            Connected Wallet Address: {formatAddress(tonWalletAddress)}
-          </Typography>
-          <Button
-            variant="contained"
-            color="error"
-            onClick={handleWalletAction}
-            sx={{ mt: 2, borderRadius: "50px" }}
-          >
-            Disconnect Wallet
-          </Button>
+          <span>
+            User-friendly address: <br />
+            {userFriendlyAddress}
+          </span>
+          <br />
+          <br />
+          <span>
+            Raw address: <br />
+            {rawAddress}
+          </span>
         </div>
-      ) : (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleWalletAction}
-          sx={{ mt: 2, borderRadius: "50px" }}
-        >
-          Connect TON Wallet
-        </Button>
       )}
     </Container>
   );
