@@ -57,6 +57,7 @@ export default function Home() {
           background: "repeat",
           backdropFilter: "blur(10px)",
           boxShadow: "0 8px 32px rgb(0 0 0 / 34%)",
+          maxWidth: "400px",
         }}
       >
         <Typography
