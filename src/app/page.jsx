@@ -7,55 +7,35 @@ import {
 } from "@tonconnect/ui-react";
 import { Container, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import Loader from "@/components/Loader";
 
 export default function Home() {
   const [isClient, setIsClient] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Loading state to control loader visibility
   const [tonConnectUI, setOptions] = useTonConnectUI();
+  const userFriendlyAddress = useTonAddress();
+  const rawAddress = useTonAddress(false);
+
+  // Set isClient to true after the component mounts (only runs in client-side)
+  useEffect(() => {
+    setIsClient(true);
+    // Set loader visibility for 3 seconds after component mounts
+    const timer = setTimeout(() => {
+      setIsLoading(false); // Hide loader after 3 seconds
+    }, 3000);
+
+    // Clean up the timeout on unmount
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     console.log("tonConnectUI", tonConnectUI);
     console.log("setOptions", setOptions);
-  }, []);
+  }, [tonConnectUI, setOptions]);
 
-  const userFriendlyAddress = useTonAddress();
-  const rawAddress = useTonAddress(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  if (!isClient) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        <div className="loader"></div>
-        <style jsx>{`
-          .loader {
-            border: 8px solid #f3f3f3;
-            border-top: 8px solid #3498db;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            animation: spin 1s linear infinite;
-          }
-
-          @keyframes spin {
-            0% {
-              transform: rotate(0deg);
-            }
-            100% {
-              transform: rotate(360deg);
-            }
-          }
-        `}</style>
-      </div>
-    );
+  // Show the loader until `isLoading` is false
+  if (isLoading) {
+    return <Loader />;
   }
 
   return (
@@ -67,14 +47,14 @@ export default function Home() {
         justifyContent: "center",
         width: "100%",
         height: "100vh",
-        margin: "0",
+        margin: "auto",
       }}
     >
       <Typography variant="h4" component="h1" gutterBottom>
         TON Connect Demo
       </Typography>
       <TonConnectButton
-        className="my-button-class "
+        className="my-button-class"
         ui={tonConnectUI}
         options={setOptions}
       />
