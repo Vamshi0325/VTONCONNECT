@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  TonConnectButton,
-  useTonAddress,
-  useTonConnectUI,
-} from "@tonconnect/ui-react";
+import { TonConnectButton, useTonAddress } from "@tonconnect/ui-react";
 import {
   Card,
   CardContent,

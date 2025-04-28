@@ -1,29 +1,3 @@
-// "use client";
-
-// import { useTonAddress, useTonWallet } from "@tonconnect/ui-react";
-// import React, { useEffect, useState } from "react";
-
-// const BalanceUI = () => {
-//   const [tonBalance, setTonBalance] = useState(0);
-//   const address = useTonAddress();
-//   const wallet = useTonWallet();
-//   useEffect(() => {
-//     if (wallet) {
-//       //   wallet.getBalance().then((balance) => {
-//       //     setTonBalance(balance);
-//       //   });
-//       console.log("wallet useTonWallet", wallet);
-//       console.log("wallet?.account.address", wallet?.account.address);
-//       console.log("address useTonAddress", address);
-
-//     }
-//   }, []);
-
-//   return <div>{address ? address : "No wallet connected"}</div>;
-// };
-
-// export default BalanceUI;
-
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -41,7 +15,9 @@ export default function BalanceUI() {
       );
       console.log("data", data.data);
       if (data && data.data.ok && data.data.result?.balance) {
-        setBalance(parseFloat(data.data.result.balance) / 1e9);
+        const nano = data.data.result.balance;
+        const balance = Number(nano) / 1e9;
+        setBalance(balance.toFixed(2));
       }
     } catch (err) {
       console.error("Failed to fetch balance:", err);
@@ -55,10 +31,8 @@ export default function BalanceUI() {
   }, [address]);
 
   return (
-    <div>
-      {address
-        ? `💰 ${balance} TON`
-        : "No wallet connected—please connect with TonConnectButton"}
-    </div>
+    <>
+      <div>{address ? `💰 ${balance} TON` : 0}</div>
+    </>
   );
 }
