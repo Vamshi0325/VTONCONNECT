@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import Loader from "../components/Loader";
+import BalanceUI from "@/components/BalanceUI";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -78,72 +79,87 @@ export default function Home() {
         </Box>
 
         {userFriendlyAddress && (
-          <Card
-            sx={{
-              borderRadius: 3,
-              background: "linear-gradient(145deg, #f5f7fa 0%, #e4e7eb 100%)",
-              boxShadow: "0 10px 20px rgba(0, 0, 0, 0.05)",
-              overflow: "hidden",
-              border: "1px solid rgba(0, 0, 0, 0.05)",
-              transition: "transform 0.3s ease",
-              "&:hover": {
-                transform: "translateY(-5px)",
-                boxShadow: "0 15px 30px rgba(0, 0, 0, 0.1)",
-              },
-            }}
-          >
-            <CardContent sx={{ padding: 3 }}>
-              <Typography
-                variant="h6"
-                gutterBottom
-                sx={{
-                  fontWeight: 600,
-                  color: theme.palette.primary.main,
-                }}
-              >
-                User-friendly address:
-              </Typography>
-              <Typography
-                variant="body1"
-                gutterBottom
-                sx={{
-                  fontFamily: "monospace",
-                  background: "rgba(0, 0, 0, 0.03)",
-                  padding: 1.5,
-                  borderRadius: 2,
-                  wordBreak: "break-all",
-                }}
-              >
-                {userFriendlyAddress}
-              </Typography>
+          <>
+            <Box
+              sx={{
+                textAlign: "center",
+                mb: 2,
+                fontWeight: 700,
+                fontSize: "1.2rem",
+                letterSpacing: "0.02em",
+                lineHeight: "1.5",
+                color: "#333",
+              }}
+            >
+              <BalanceUI />
+            </Box>
+            <Card
+              sx={{
+                borderRadius: 3,
+                background: "linear-gradient(145deg, #f5f7fa 0%, #e4e7eb 100%)",
+                boxShadow: "0 10px 20px rgba(0, 0, 0, 0.05)",
+                overflow: "hidden",
+                border: "1px solid rgba(0, 0, 0, 0.05)",
+                transition: "transform 0.3s ease",
+                "&:hover": {
+                  transform: "translateY(-5px)",
+                  boxShadow: "0 15px 30px rgba(0, 0, 0, 0.1)",
+                },
+              }}
+            >
+              <CardContent sx={{ padding: 3 }}>
+                <Typography
+                  variant="h6"
+                  gutterBottom
+                  sx={{
+                    fontWeight: 600,
+                    color: theme.palette.primary.main,
+                  }}
+                >
+                  User-friendly address:
+                </Typography>
+                <Typography
+                  variant="body1"
+                  gutterBottom
+                  sx={{
+                    fontFamily: "monospace",
+                    background: "rgba(0, 0, 0, 0.03)",
+                    padding: 1.5,
+                    borderRadius: 2,
+                    wordBreak: "break-all",
+                  }}
+                >
+                  {userFriendlyAddress}
+                </Typography>
 
-              <Divider sx={{ my: 2.5 }} />
+                <Divider sx={{ my: 2.5 }} />
 
-              <Typography
-                variant="h6"
-                gutterBottom
-                sx={{
-                  fontWeight: 600,
-                  color: theme.palette.primary.main,
-                }}
-              >
-                Raw address:
-              </Typography>
-              <Typography
-                variant="body1"
-                gutterBottom
-                sx={{
-                  fontFamily: "monospace",
-                  background: "rgba(0, 0, 0, 0.03)",
-                  padding: 1.5,
-                  borderRadius: 2,
-                  wordBreak: "break-all",
-                }}
-              >
-                {rawAddress}
-              </Typography>
-            </CardContent>
-          </Card>
+                <Typography
+                  variant="h6"
+                  gutterBottom
+                  sx={{
+                    fontWeight: 600,
+                    color: theme.palette.primary.main,
+                  }}
+                >
+                  Raw address:
+                </Typography>
+                <Typography
+                  variant="body1"
+                  gutterBottom
+                  sx={{
+                    fontFamily: "monospace",
+                    background: "rgba(0, 0, 0, 0.03)",
+                    padding: 1.5,
+                    borderRadius: 2,
+                    wordBreak: "break-all",
+                  }}
+                >
+                  {rawAddress}
+                </Typography>
+              </CardContent>
+            </Card>
+          </>
         )}
       </Paper>
     </Container>
