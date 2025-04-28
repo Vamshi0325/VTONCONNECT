@@ -17,7 +17,7 @@ export default function BalanceUI() {
       if (data && data.data.ok && data.data.result?.balance) {
         const nano = data.data.result.balance;
         const balance = Number(nano) / 1e9;
-        setBalance(balance.toFixed(2));
+        setBalance(balance.toFixed(4));
       }
     } catch (err) {
       console.error("Failed to fetch balance:", err);
