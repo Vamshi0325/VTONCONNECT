@@ -85,6 +85,7 @@ export default function Home() {
                 letterSpacing: "0.02em",
                 lineHeight: "1.5",
                 color: "#333",
+                marginTop: "20vh",
               }}
             >
               <BalanceUI />
