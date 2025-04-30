@@ -3,16 +3,19 @@
 import React, { useEffect, useState } from "react";
 import { useTonAddress, useTonConnectUI } from "@tonconnect/ui-react";
 import axios from "axios";
-import { Box, Button } from "@mui/material";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
+import Loader from "./Loader";
 
 export default function BalanceUI() {
   const address = useTonAddress(); // Get the address from TonConnect
   const [balance, setBalance] = useState(0);
   const [tonConnectUI, setOptions] = useTonConnectUI(); // Get TonConnect UI instance
+  const [loading, setLoading] = useState(false);
 
   // Fetch balance from the TON blockchain
   const fetchBalance = async () => {
     if (!address) return; // If address is not available, do nothing
+    setLoading(true);
     try {
       const data = await axios.get(
         `https://testnet.toncenter.com/api/v2/getAddressInformation?address=${address}`
@@ -22,8 +25,10 @@ export default function BalanceUI() {
         const updatedBalance = Number(nano) / 1e9; // Convert nanotons to TON
         setBalance(updatedBalance.toFixed(4)); // Update balance state
       }
+      setLoading(false);
     } catch (err) {
       console.error("Failed to fetch balance:", err);
+      setLoading(false);
     }
   };
 
@@ -50,13 +55,16 @@ export default function BalanceUI() {
     }
 
     try {
+      setLoading(true);
       const response = await tonConnectUI.sendTransaction(makeTransaction);
       console.log("Transaction sent successfully!", response);
 
-      // Immediately fetch and set the balance after the transaction
-      await fetchBalance(); // Fetch balance after the transaction is sent
+      setTimeout(async () => {
+        await fetchBalance();
+      }, 10 * 1000);
     } catch (err) {
       console.error("Failed to send transaction:", err);
+      setLoading(false);
     }
   };
 
@@ -69,7 +77,27 @@ export default function BalanceUI() {
 
   return (
     <Box>
-      <Box>{address ? `💰 ${balance} TON` : 0}</Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: 2,
+          mb: 2,
+        }}
+      >
+        {loading ? (
+          <CircularProgress size={50} />
+        ) : address ? (
+          <Typography variant="h4" component="h4" sx={{ fontWeight: "bold" }}>
+            💰 {balance} TON
+          </Typography>
+        ) : (
+          <Typography variant="h4" component="h4" sx={{ fontWeight: "bold" }}>
+            0
+          </Typography>
+        )}
+      </Box>
       <Button variant="contained" color="primary" onClick={sendTransaction}>
         Send Transaction
       </Button>

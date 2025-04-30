@@ -8,7 +8,6 @@ import {
   Typography,
   Box,
   Paper,
-  Divider,
   useTheme,
 } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -18,13 +17,12 @@ import BalanceUI from "@/components/BalanceUI";
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const userFriendlyAddress = useTonAddress();
-  const rawAddress = useTonAddress(false);
   const theme = useTheme();
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 3000);
+    }, 2000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -127,32 +125,6 @@ export default function Home() {
                   }}
                 >
                   {userFriendlyAddress}
-                </Typography>
-
-                <Divider sx={{ my: 2.5 }} />
-
-                <Typography
-                  variant="h6"
-                  gutterBottom
-                  sx={{
-                    fontWeight: 600,
-                    color: theme.palette.primary.main,
-                  }}
-                >
-                  Raw address:
-                </Typography>
-                <Typography
-                  variant="body1"
-                  gutterBottom
-                  sx={{
-                    fontFamily: "monospace",
-                    background: "rgba(0, 0, 0, 0.03)",
-                    padding: 1.5,
-                    borderRadius: 2,
-                    wordBreak: "break-all",
-                  }}
-                >
-                  {rawAddress}
                 </Typography>
               </CardContent>
             </Card>
