@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { useTonAddress, useTonConnectUI } from "@tonconnect/ui-react";
 import axios from "axios";
 import { Box, Button, CircularProgress, Typography } from "@mui/material";
-import Loader from "./Loader";
 
 export default function BalanceUI() {
   const address = useTonAddress(); // Get the address from TonConnect

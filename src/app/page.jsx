@@ -11,8 +11,8 @@ import {
   useTheme,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import Loader from "../components/Loader";
-import BalanceUI from "@/components/BalanceUI";
+import Loader from "./components/Loader";
+import BalanceUI from "./components/BalanceUI";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
