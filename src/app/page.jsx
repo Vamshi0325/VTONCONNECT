@@ -13,6 +13,7 @@ import {
 import { useEffect, useState } from "react";
 import Loader from "./components/Loader";
 import BalanceUI from "./components/BalanceUI";
+import TelegramAd from "./components/TelegramAd";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -22,7 +23,7 @@ export default function Home() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 1000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -70,6 +71,10 @@ export default function Home() {
 
         <Box sx={{ display: "flex", justifyContent: "center", mb: 4 }}>
           <TonConnectButton />
+        </Box>
+
+        <Box sx={{ display: "flex", justifyContent: "center", mb: 4 }}>
+          <TelegramAd />
         </Box>
 
         {userFriendlyAddress && (
